@@ -21,6 +21,12 @@ podman-docker
 wireguard-tools
 krb5-workstation
 
+# --- Power Management ---
+tlp
+swayidle
+swaylock
+brightnessctl
+
 # --- Emacs ---
 emacs
 cmake              # VERIFY - needed to build vterm's native module

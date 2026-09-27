@@ -17,7 +17,7 @@ pkg_install() {
 			log "$var is already installed"
 		else
 		# If it is not, install it
-			dnf install -y "$var"
+			sudo dnf install -y "$var"
 		fi
 	done
 }
