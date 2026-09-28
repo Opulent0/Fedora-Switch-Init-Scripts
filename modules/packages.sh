@@ -5,15 +5,14 @@ setup_packages() {
 
     local pkg_file="$SCRIPT_DIR/files/package-list.txt"
     local pkgs=()
+    local line pkg
 
-    while IFS= read -r line; do
+    while IFS= read -r line || [[ -n "$line" ]]; do
         # skip blank lines and full-line comments
         [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
 
-        # strip inline comments and trailing whitespace
-        local pkg
+        # strip inline comments and surrounding whitespace
         pkg="$(echo "$line" | sed 's/#.*//' | xargs)"
-
         [[ -z "$pkg" ]] && continue
 
         pkgs+=("$pkg")
