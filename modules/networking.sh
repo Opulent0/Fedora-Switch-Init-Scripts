@@ -3,6 +3,9 @@
 setup_networking() {
     log "Setting up networking..."
 
+    require_cmd nmcli
+    require_cmd wg
+
     local conf_src="$SCRIPT_DIR/files/citadel.conf"
 
     # 1. Preconditions: fail early with a clear message
@@ -25,7 +28,7 @@ setup_networking() {
     # 2. Import the connection only if it doesn't exist yet.
     #    nmcli names the connection after the file, so the temp file must be
     #    called wg0.conf. nmcli also validates PrivateKey, so a throwaway
-    #    valid key goes in and gets replaced in step 3.
+    #    valid key goes in and is replaced in step 3.
     if ! sudo nmcli connection show wg0 &>/dev/null; then
         local tmpdir
         tmpdir="$(mktemp -d)"
@@ -39,14 +42,15 @@ setup_networking() {
         log "wg0 connection already exists, skipping import"
     fi
 
-    # 3. Inject the real key every run (this is what makes rotation work)
+    # 3. Inject the real key on every run (this is what makes rotation work)
     sudo nmcli connection modify wg0 wireguard.private-key "$WG_PRIVATE_KEY"
 
     # 4. Autoconnect on boot
     sudo nmcli connection modify wg0 connection.autoconnect yes
 
-    # 5. Bring it up now; don't abort the whole script if the network is down
-    sudo nmcli connection up wg0 || log "WARNING: couldn't bring wg0 up (no network yet?). It will autoconnect later."
+    # 5. Bring it up now, without aborting if the network is down
+    sudo nmcli connection up wg0 \
+        || log "WARNING: couldn't bring wg0 up (no network yet?). It will autoconnect later."
 
     log "Networking setup complete."
 }
