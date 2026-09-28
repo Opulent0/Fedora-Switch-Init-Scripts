@@ -8,6 +8,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Source common.sh
 source "$SCRIPT_DIR/lib/common.sh"
+source "$SCRIPT_DIR/files/secrets.sh"
 
 # Source every file in modules/ so their functions become available.
 # Think about how to loop over files in a directory and source each one,
