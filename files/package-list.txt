@@ -23,9 +23,6 @@ krb5-workstation
 
 # --- Emacs ---
 emacs
-cmake              # VERIFY - needed to build vterm's native module
-libtool            # VERIFY - needed to build vterm's native module
-libvterm-devel     # VERIFY - vterm's native module links against this
 
 # --- Fonts ---
 # VERIFY - pick whatever your Emacs config actually references;

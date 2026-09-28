@@ -27,7 +27,6 @@ log "Starting setup..."
 setup_packages       # everything else depends on packages existing
 setup_security       # SELinux enforcing, firewalld active — before anything opens ports
 setup_networking     # WireGuard, Kerberos — needs packages + a configured firewall
-setup_containers     # podman, quadlets, linger — needs packages + firewall rules in place
 setup_emacs          # independent of the above, but needs packages (emacs, fonts, LSPs)
 setup_zsh            # independent, needs packages (zsh, plugins, theme)
 
