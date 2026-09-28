@@ -1,9 +1,11 @@
+# One package per line. Inline comments after # are ignored.
+# Verify new names against Fedora with check-packages.sh before adding them.
+
 # --- Languages ---
 golang
 python3
 nodejs24
 nodejs24-npm
-npm
 
 # --- CLI Tools ---
 tree
@@ -12,8 +14,12 @@ ripgrep
 fd-find
 git
 zsh
+stow
+curl
+unzip
+util-linux-user   # provides chsh
 
-# --- Containers & DevTooling ---
+# --- Containers ---
 podman
 podman-docker
 
@@ -21,9 +27,11 @@ podman-docker
 wireguard-tools
 krb5-workstation
 
+# --- Power management / Sway extras ---
+tlp
+swayidle
+swaylock
+brightnessctl
+
 # --- Emacs ---
 emacs
-
-# --- Fonts ---
-# VERIFY - pick whatever your Emacs config actually references;
-# a Nerd Font is the common choice if your theme/modeline uses icons
