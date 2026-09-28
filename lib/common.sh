@@ -1,30 +1,33 @@
 #!/usr/bin/env bash
 
 log() {
-	# message will be 1
-    # print a message with a consistent prefix, e.g. "[setup] message"
-	echo "[setup] $1"
+    printf '[setup] %s\n' "$*"
 }
 
+# Install any of the given packages that aren't installed yet,
+# in a single dnf transaction.
 pkg_install() {
-    # take one or more package names
-    # for each: check if already installed (rpm -q), skip if so, else dnf install -y
-    # this is what makes package installs idempotent
-	for var in "$@"
-	do
-		# Check to make sure the package isn't already installed
-		if rpm -q "$var" &>/dev/null; then
-			log "$var is already installed"
-		else
-		# If it is not, install it
-			sudo dnf install -y "$var"
-		fi
-	done
+    local missing=()
+    local pkg
+
+    for pkg in "$@"; do
+        if rpm -q "$pkg" &>/dev/null; then
+            log "$pkg is already installed"
+        else
+            missing+=("$pkg")
+        fi
+    done
+
+    if (( ${#missing[@]} > 0 )); then
+        log "Installing: ${missing[*]}"
+        sudo dnf install -y "${missing[@]}"
+    fi
 }
 
+# Stop the whole script if a command a module depends on is missing
 require_cmd() {
-    # take a command name, exit with an error if `command -v` doesn't find it
-    # useful at the top of a module that depends on something being installed first
-
-	return $1 -v
+    if ! command -v "$1" &>/dev/null; then
+        log "ERROR: required command '$1' not found"
+        exit 1
+    fi
 }
